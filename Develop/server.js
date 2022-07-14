@@ -4,9 +4,8 @@ const app = express();
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
+const uniqid = require('uniqid');
 
-// helper method for making the unique id
-const uuid = require('./helpers/uuid')
 const notesData = require('./db/db.json');
 // const { json } = require('express');
 
@@ -60,7 +59,7 @@ app.post('/api/notes', (req, res) => {
         const newNote = {
             // insert new note on db.json 
             note,
-            note_id: uuid(),
+            note_id: uniqid(),
         };
 
         // get all the notes, then update them
