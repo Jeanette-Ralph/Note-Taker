@@ -8,7 +8,7 @@ const util = require('util');
 // helper method for making the unique id
 const uuid = require('./helpers/uuid')
 const notesData = require('./db/db.json');
-const { json } = require('express');
+// const { json } = require('express');
 
 // Middleware for parsing application/json and urlencoded data
 app.use(express.json());
@@ -21,8 +21,9 @@ app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, './public/pages/notes.html'));
 });
 
+// NOTES
 
-// in both cases a client is making a request
+// in both cases (html/api call) a client is making a request
 
 // html routes are the pages served
 // client is requesting a page
@@ -31,9 +32,8 @@ app.get('/notes', (req, res) => {
 // go to database and then serve the data back
 // client is requesting data
 
-
-// using this allows us to get the object instead of using a callback function,
-// callback function is passed in another and called back
+// using promisfy allows us to get the object instead of using a callback function,
+// a callback function is passed into another function and called back
 const readFromFile = util.promisify(fs.readFile);
 const writeToFile = util.promisify(fs.writeFile);
 
@@ -50,46 +50,40 @@ app.get('/api/notes', (req, res) => {
 });
 
 
-
 // POST api/notes, creating a note
 app.post('/api/notes', (req, res) => {
 
-    // showing the info in the terminal
-    console.info(req.rawHeaders);
-
-    // add new note to the db.json file
-
-    // return new note to the client
-
-    // need to recieve new note to save on the request body, match the db.json 
     const note = req.body
 
     if (note) {
 
         const newNote = {
             // insert new note on db.json 
-
             note,
             note_id: uuid(),
         };
 
-        // get all the notes, update them
+        // get all the notes, then update them
         readFromFile('./db/db.json', 'utf-8').then((data) => {
 
             // parse the notes into a string
             const parsedNotes = [].concat(JSON.parse(data));
 
-            return [...parsedNotes, newNote]
+            parsedNotes.push(note);
+
+            return parsedNotes
+
+            // return [...parsedNotes, newNote]
         }).then((updatedNotes) => {
             writeToFile('./db/db.json', JSON.stringify(updatedNotes))
-        }).then(() => newNote)
+        }).then(() => note)
     } else {
         res.status(500).json('Error in adding a new note');
     }
 
 });
 
-// GET request * return the index.html
+// GET request * to return the index.html
 app.get('*', (req, res) => {
 
     res.sendFile(path.join(__dirname, './public/pages/index.html'));
