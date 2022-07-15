@@ -56,10 +56,13 @@ app.post('/api/notes', (req, res) => {
 
     if (note) {
 
+        const id = uniqid();
+        console.log(id);
+
         const newNote = {
-            // insert new note on db.json 
-            note,
-            note_id: uniqid(),
+            // insert new note on db.json, spread the note to take it out of the object
+            ...note,
+            id: uniqid(),
         };
 
         // get all the notes, then update them
@@ -68,7 +71,7 @@ app.post('/api/notes', (req, res) => {
             // parse the notes into a string
             const parsedNotes = [].concat(JSON.parse(data));
 
-            parsedNotes.push(note);
+            parsedNotes.push(newNote);
 
             return parsedNotes
 

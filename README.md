@@ -13,7 +13,7 @@
 MIT ![licence icon](https://img.shields.io/badge/License-MIT-lavender.svg)
 
 ## 🚀 Project Details
-Utilizing Javascript and Express.js I developed the backend of the application that allows the user to add new notes and save them to a dashboard.![App Screenshot](Assets/images/app1.png)
+Utilizing Node.js and Express.js I developed the backend of the application that allows the user to add new notes and save them to a dashboard.![App Screenshot](Assets/images/app1.png)
 
 ## 👩‍💻 Usage Information
 This application is used to help organize a user's notes into one place. This application is used by stating the server and opening the link in the browser. 
